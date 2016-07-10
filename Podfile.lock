@@ -1,0 +1,35 @@
+PODS:
+  - Masonry (0.6.4)
+  - pop (1.0.9)
+  - ReactiveCocoa (4.0.0):
+    - ReactiveCocoa/UI (= 4.0.0)
+    - Result (~> 1.0.1)
+  - ReactiveCocoa/Core (4.0.0):
+    - ReactiveCocoa/no-arc
+    - Result (~> 1.0.1)
+  - ReactiveCocoa/no-arc (4.0.0):
+    - Result (~> 1.0.1)
+  - ReactiveCocoa/UI (4.0.0):
+    - ReactiveCocoa/Core
+    - Result (~> 1.0.1)
+  - Result (1.0.2)
+  - SDWebImage (3.8.1):
+    - SDWebImage/Core (= 3.8.1)
+  - SDWebImage/Core (3.8.1)
+
+DEPENDENCIES:
+  - Masonry
+  - pop (~> 1.0)
+  - ReactiveCocoa (= 4.0.0)
+  - SDWebImage
+
+SPEC CHECKSUMS:
+  Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
+  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
+  ReactiveCocoa: 69be555be30674b07a86b60a91b855063841acc0
+  Result: dd3dd71af3fa2e262f1a999e14fba2c25ec14f16
+  SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
+
+PODFILE CHECKSUM: 9cdd6cbf2b0bcb634a414e48036b67bc3f6b8a1f
+
+COCOAPODS: 1.0.1
