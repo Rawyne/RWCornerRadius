@@ -12,6 +12,8 @@
 
 @interface UIImageView ()
 
+@property (nonatomic, assign) BOOL rw_enableCornerRadius;
+
 @property (nonatomic, strong) UIImage *rw_imageTmp;
 
 @property (nonatomic, assign) BOOL rw_frameValid;
@@ -25,10 +27,13 @@
 - (void)setRw_cornerRadius:(CGFloat)rw_cornerRadius {
     objc_setAssociatedObject(self, @selector(rw_cornerRadius), @(rw_cornerRadius), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
+    self.rw_enableCornerRadius = YES;
+    
     static dispatch_once_t setImagePredicate;
     static dispatch_once_t layoutSubviewsPredicate;
     [[self class] rw_swizzleMethod:@selector(setImage:) withAnotherMethod:@selector(rw_setImage:) predicate:&setImagePredicate];
     [[self class] rw_swizzleMethod:@selector(layoutSubviews) withAnotherMethod:@selector(rw_layoutSubviews) predicate:&layoutSubviewsPredicate];
+    
     
     if (self.image) {
         self.image = self.image;
@@ -52,19 +57,25 @@
 
 - (void)rw_layoutSubviews {
     [self rw_layoutSubviews];
-    if (self.frame.size.width > 0 && self.rw_cornerRadius > 0) {
-        self.rw_frameValid = YES;
-        if (self.rw_imageTmp) {
-            [self rw_drawImage];
+    
+    if (self.rw_enableCornerRadius) {
+        if (self.frame.size.width > 0 && self.rw_cornerRadius > 0) {
+            self.rw_frameValid = YES;
+            if (self.rw_imageTmp) {
+                [self rw_drawImage];
+            }
         }
     }
 }
 
 - (void)rw_setImage:(UIImage *)image {
-//    [self rw_setImage:image];
-    self.rw_imageTmp = image;
-    if (self.rw_frameValid) {
-        [self rw_drawImage];
+    if (self.rw_enableCornerRadius) {
+        self.rw_imageTmp = image;
+        if (self.rw_frameValid) {
+            [self rw_drawImage];
+        }
+    } else {
+        [self rw_setImage:image];
     }
 }
 
@@ -89,17 +100,17 @@
         });
     });
     
-//    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
-//    if (!UIGraphicsGetCurrentContext()) {
-//        return;
-//    }
-//    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:self.rw_cornerRadius];
-//    [path addClip];
-//    [image drawInRect:self.bounds];
-//    UIImage *processedImage = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    
-//    [self rw_setImage:processedImage];
+    //    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
+    //    if (!UIGraphicsGetCurrentContext()) {
+    //        return;
+    //    }
+    //    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:self.rw_cornerRadius];
+    //    [path addClip];
+    //    [image drawInRect:self.bounds];
+    //    UIImage *processedImage = UIGraphicsGetImageFromCurrentImageContext();
+    //    UIGraphicsEndImageContext();
+    //
+    //    [self rw_setImage:processedImage];
 }
 
 
@@ -119,6 +130,14 @@
 
 - (BOOL)rw_frameValid {
     return [objc_getAssociatedObject(self, @selector(rw_frameValid)) boolValue];
+}
+
+- (void)setRw_enableCornerRadius:(BOOL)rw_enableCornerRadius {
+    objc_setAssociatedObject(self, @selector(rw_enableCornerRadius), @(rw_enableCornerRadius), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)rw_enableCornerRadius {
+    return [objc_getAssociatedObject(self, @selector(rw_enableCornerRadius)) boolValue];
 }
 
 
